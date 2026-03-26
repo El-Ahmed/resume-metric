@@ -1,0 +1,7 @@
+<app-resume-selector
+  [isLoading]="resumeWorkflow.isResumeFileLoading()"
+  (resumeFile)="resumeWorkflow.loadResumeFile($event)"
+/>
+<pre
+  >{{ resumeWorkflow.markdownResume() }}
+</pre>

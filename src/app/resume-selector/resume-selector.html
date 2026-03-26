@@ -1,0 +1,8 @@
+@if (!isLoading()) {
+  <input
+    type="file"
+    data-testid="inputFile"
+    accept="application/pdf"
+    (change)="onFileSelected($event)"
+  />
+}
