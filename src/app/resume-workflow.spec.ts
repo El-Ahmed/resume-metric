@@ -47,4 +47,12 @@ describe('ResumeWorkflow', () => {
     });
     expect(service.markdownResume()).toBe('parsed text');
   });
+
+  it('should clear redacted text when a new resume is selected', () => {
+    const text = 'this [redacted] is important';
+    service.loadRedactedText(text);
+    expect(service.redactedText()).toEqual(text);
+    service.loadResumeFile(new File(['test'], 'test.pdf'));
+    expect(service.redactedText()).toEqual(null);
+  });
 });

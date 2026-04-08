@@ -18,6 +18,9 @@
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
     "@opendocsg/pdf2md": "^0.2.5",
+    "@tailwindcss/typography": "^0.5.19",
+    "marked": "^17.0.6",
+    "ngx-markdown": "^21.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

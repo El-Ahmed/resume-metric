@@ -24,5 +24,12 @@ export class ResumeWorkflow {
 
   loadResumeFile(resumePdf: File) {
     this.resumeFile.set(resumePdf);
+    this.redactedTextValue.set(null);
   }
+
+  private redactedTextValue = signal<string | null>(null);
+  loadRedactedText(redactedText: string) {
+    this.redactedTextValue.set(redactedText);
+  }
+  redactedText = computed(() => this.redactedTextValue());
 }

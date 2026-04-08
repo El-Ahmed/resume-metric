@@ -2,6 +2,12 @@
   [isLoading]="resumeWorkflow.isResumeFileLoading()"
   (resumeFile)="resumeWorkflow.loadResumeFile($event)"
 />
-<pre
-  >{{ resumeWorkflow.markdownResume() }}
-</pre>
+
+@if (resumeWorkflow.markdownResume(); as text) {
+  <app-text-redactor [text]="text" (redactedText)="resumeWorkflow.loadRedactedText($event)" />
+}
+@if (resumeWorkflow.redactedText(); as text) {
+  <pre>{{ text }}</pre>
+}
+
+
