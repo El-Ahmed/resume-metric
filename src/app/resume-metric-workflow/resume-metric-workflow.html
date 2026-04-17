@@ -6,8 +6,25 @@
 @if (resumeWorkflow.markdownResume(); as text) {
   <app-text-redactor [text]="text" (redactedText)="resumeWorkflow.loadRedactedText($event)" />
 }
-@if (resumeWorkflow.redactedText(); as text) {
-  <pre>{{ text }}</pre>
+<div>
+  <textarea [(ngModel)]="resumeWorkflow.jobDescription"></textarea>
+</div>
+
+<button (click)="resumeMetric.getScore()">Analyze</button>
+@if (resumeMetric.isScoreLoading()) {
+  <h1>loading...</h1>
 }
-
-
+@if (resumeMetric.score(); as score) {
+  <h2>{{ score.fit_status }}</h2>
+  <ul>
+    <li>Education: {{ score.scores.education_merit }}</li>
+    <li>Functional: {{ score.scores.functional_alignment }}</li>
+    <li>Seniority: {{ score.scores.seniority_impact }}</li>
+  </ul>
+  <h2>Experience:</h2>
+  <p>{{ score.internal_reasoning.experience_logic }}</p>
+  <h2>Skills:</h2>
+  <p>{{ score.internal_reasoning.skills_logic }}</p>
+  <h2>Gap analysis:</h2>
+  <p>{{ score.internal_reasoning.gap_analysis }}</p>
+}

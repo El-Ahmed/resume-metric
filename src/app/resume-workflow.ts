@@ -32,4 +32,6 @@ export class ResumeWorkflow {
     this.redactedTextValue.set(redactedText);
   }
   redactedText = computed(() => this.redactedTextValue());
+
+  jobDescription = signal<string | null>(null);
 }
