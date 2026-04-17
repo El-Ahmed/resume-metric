@@ -11,6 +11,10 @@ import { Parser } from 'marked';
 function markedOptionsFactory(): MarkedOptions {
   const renderer = new MarkedRenderer();
 
+  renderer.link = ({ text }) => {
+    return text;
+  };
+
   renderer.paragraph = ({ tokens }) => {
     const html = Parser.parseInline(tokens);
 

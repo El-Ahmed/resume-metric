@@ -77,4 +77,15 @@ describe('TextRedactor', () => {
       'Hello [redacted] this is a [redacted] text.\n## [redacted] that [redacted] but long enough.';
     expect(fixture.componentInstance.redactedText).toEqual(redactedText);
   });
+
+  it('should not show emails as clickable', async () => {
+    const text = `Hello my mail is myname@email.com don't link to it.`;
+    const { container } = await render(HostComponent, {
+      componentProperties: {
+        text: text,
+      },
+    });
+    const link = container.querySelector('a');
+    expect(link).toBeNull();
+  });
 });
