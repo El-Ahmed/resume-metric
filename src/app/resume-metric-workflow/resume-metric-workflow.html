@@ -1,33 +1,79 @@
-<div class="p-4">
-  <app-resume-selector
-    [isLoading]="resumeWorkflow.isResumeFileLoading()"
-    (resumeFile)="resumeWorkflow.loadResumeFile($event)"
-    [selectedResume]="resumeWorkflow.resumeFile()"
-  />
-</div>
+<div class="flex flex-col min-h-screen bg-background text-foreground">
+  <header class="p-4 border-b sticky top-0 bg-background/95 backdrop-blur z-10">
+    <div class="flex flex-col gap-1 max-w-lg mx-auto">
+      <p hlmP class="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        Step {{ currentStep() }} of 3
+      </p>
+      <h1 hlmH1 class="text-xl font-bold transition-all">
+        {{ stepTitles[currentStep() - 1] }}
+      </h1>
 
-@if (resumeWorkflow.markdownResume(); as text) {
-  <app-text-redactor [text]="text" (redactedText)="resumeWorkflow.loadRedactedText($event)" />
-}
-<div>
-  <textarea [(ngModel)]="resumeWorkflow.jobDescription"></textarea>
-</div>
+      <hlm-progress class="h-1 mt-2" [value]="(currentStep() / 3) * 100">
+        <hlm-progress-indicator />
+      </hlm-progress>
+    </div>
+  </header>
 
-<button (click)="resumeMetric.getScore()">Analyze</button>
-@if (resumeMetric.isScoreLoading()) {
-  <h1>loading...</h1>
-}
-@if (resumeMetric.score(); as score) {
-  <h2>{{ score.fit_status }}</h2>
-  <ul>
-    <li>Education: {{ score.scores.education_merit }}</li>
-    <li>Functional: {{ score.scores.functional_alignment }}</li>
-    <li>Seniority: {{ score.scores.seniority_impact }}</li>
-  </ul>
-  <h2>Experience:</h2>
-  <p>{{ score.internal_reasoning.experience_logic }}</p>
-  <h2>Skills:</h2>
-  <p>{{ score.internal_reasoning.skills_logic }}</p>
-  <h2>Gap analysis:</h2>
-  <p>{{ score.internal_reasoning.gap_analysis }}</p>
-}
+  <main class="flex-1 p-4 pb-24 max-w-lg mx-auto w-full">
+    @switch (currentStep()) {
+      @case (1) {
+        <section class="space-y-4 animate-in fade-in slide-in-from-bottom-2">
+          <app-resume-selector
+            [isLoading]="resumeWorkflow.isResumeFileLoading()"
+            (resumeFile)="resumeWorkflow.loadResumeFile($event)"
+            [selectedResume]="resumeWorkflow.resumeFile()"
+          />
+          @if (resumeWorkflow.markdownResume(); as text) {
+            <p hlmP class="text-sm text-muted-foreground">
+              Tap words to redact sensitive info. These will be hidden from the analysis.
+            </p>
+            <div class="rounded-lg border bg-card p-4 min-h-[40vh]">
+              <app-text-redactor
+                [text]="text"
+                (redactedText)="resumeWorkflow.loadRedactedText($event)"
+              />
+            </div>
+          }
+        </section>
+      }
+      @case (2) {
+        <section class="space-y-4 animate-in fade-in slide-in-from-right-4">
+          <textarea
+            hlmInput
+            class="min-h-[60vh] w-full resize-none"
+            placeholder="Paste the Job Description here..."
+            [(ngModel)]="resumeWorkflow.jobDescription"
+          >
+          </textarea>
+        </section>
+      }
+      @case (3) {
+        <section class="space-y-6">
+          @if (resumeMetric.isScoreLoading()) {
+            <div class="flex flex-col items-center justify-center py-20 space-y-4">
+              <hlm-spinner class="text-primary" />
+              <p hlmP class="text-muted-foreground animate-pulse text-sm">
+                AI is comparing your profile...
+              </p>
+            </div>
+          } @else {
+            <div class="animate-in zoom-in-95">
+              <app-score-result [resumeScore]="resumeMetric.score()" />
+            </div>
+          }
+        </section>
+      }
+    }
+  </main>
+
+  <footer class="fixed bottom-0 left-0 right-0 p-4 border-t bg-background/80 backdrop-blur-md">
+    <div class="max-w-full mx-auto flex gap-3">
+      @if (currentStep() > 1) {
+        <button hlmBtn variant="outline" class="flex-1" (click)="prevStep()">Back</button>
+      }
+      <button hlmBtn class="flex-2" [disabled]="isNextDisabled()" (click)="nextStep()">
+        {{ currentStep() === 3 ? 'Start Over' : 'Continue' }}
+      </button>
+    </div>
+  </footer>
+</div>
