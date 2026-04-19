@@ -30,11 +30,11 @@ describe('ResumeSelector', () => {
     expect(fixture.componentInstance.resumeFile).toBe(file);
   });
 
-  it('should hide the input if it is loading', async () => {
+  it('should hide the select button if it is loading', async () => {
     const { fixture, detectChanges } = await render(HostComponent);
-    expect(screen.queryByTestId('inputFile')).toBeInTheDocument();
+    expect(screen.queryByTestId('selectButton')).toBeInTheDocument();
     fixture.componentInstance.isLoading = true;
     detectChanges();
-    expect(screen.queryByTestId('inputFile')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('selectButton')).not.toBeInTheDocument();
   });
 });

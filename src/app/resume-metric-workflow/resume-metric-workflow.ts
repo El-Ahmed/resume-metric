@@ -14,4 +14,6 @@ import { ResumeMetric } from '../resume-metric';
 export class ResumeMetricWorkflow {
   resumeWorkflow = inject(ResumeWorkflow);
   resumeMetric = inject(ResumeMetric);
+  currentStep = 0;
+  stepTitles = ['a', 'b', 'c'];
 }

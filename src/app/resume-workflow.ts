@@ -6,7 +6,7 @@ import { Parser } from './parser';
 })
 export class ResumeWorkflow {
   private parser = inject(Parser);
-  private resumeFile = signal<File | null>(null);
+  resumeFile = signal<File | null>(null);
   private loader = async (file: File | null) => {
     if (!file) return '';
     return await this.parser.parse(file);
@@ -23,8 +23,8 @@ export class ResumeWorkflow {
   isResumeFileLoading = computed(() => this.resumeResource.isLoading());
 
   loadResumeFile(resumePdf: File) {
-    this.resumeFile.set(resumePdf);
     this.redactedTextValue.set(null);
+    this.resumeFile.set(resumePdf);
   }
 
   private redactedTextValue = signal<string | null>(null);

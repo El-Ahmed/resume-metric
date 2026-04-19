@@ -1,8 +1,39 @@
-@if (!isLoading()) {
-  <input
-    type="file"
-    data-testid="inputFile"
-    accept="application/pdf"
-    (change)="onFileSelected($event)"
-  />
-}
+<div class="flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-10">
+  <ng-icon hlm name="lucideFileUp" class="text-muted-foreground mb-4 size-8" />
+
+  @if (!isLoading()) {
+    <div class="text-center">
+      <h3 hlmH3 class="mb-2">
+        {{ selectedResume() ? 'File Selected' : 'Select your Resume' }}
+      </h3>
+
+      @if (selectedResume(); as selectedFile) {
+        <p hlmP class="text-sm font-medium text-primary mb-4">
+          {{ selectedFile.name }} ({{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB)
+        </p>
+      } @else {
+        <p hlmP class="text-xs text-muted-foreground mb-6">PDF or DOCX (Max 5MB)</p>
+      }
+    </div>
+
+    <input
+      #fileInput
+      type="file"
+      class="hidden"
+      accept="application/pdf"
+      data-testid="inputFile"
+      (change)="onFileSelected($event)"
+    />
+
+    <div class="flex gap-2">
+      <button hlmBtn variant="outline" (click)="fileInput.click()" data-testid="selectButton">
+        {{ selectedResume() ? 'Change File' : 'Select File' }}
+      </button>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center gap-4">
+      <hlm-spinner class="text-primary" />
+      <p class="text-sm animate-pulse">Parsing your resume...</p>
+    </div>
+  }
+</div>

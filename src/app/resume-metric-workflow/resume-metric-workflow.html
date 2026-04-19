@@ -1,7 +1,10 @@
-<app-resume-selector
-  [isLoading]="resumeWorkflow.isResumeFileLoading()"
-  (resumeFile)="resumeWorkflow.loadResumeFile($event)"
-/>
+<div class="p-4">
+  <app-resume-selector
+    [isLoading]="resumeWorkflow.isResumeFileLoading()"
+    (resumeFile)="resumeWorkflow.loadResumeFile($event)"
+    [selectedResume]="resumeWorkflow.resumeFile()"
+  />
+</div>
 
 @if (resumeWorkflow.markdownResume(); as text) {
   <app-text-redactor [text]="text" (redactedText)="resumeWorkflow.loadRedactedText($event)" />
