@@ -23,8 +23,13 @@ export class ResumeSelector {
     if (!input.files || input.files.length === 0) {
       return;
     }
+    const maxSizeBytes = 5 * 1024 * 1024;
 
     const file = input.files[0];
+    if (file && file.size > maxSizeBytes) {
+      return;
+    }
+
     this.resumeFile.emit(file);
   };
 }
