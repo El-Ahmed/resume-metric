@@ -8,7 +8,9 @@ export const config = {
 };
 
 const SYSTEM_PROMPT = `System Role
- You are the Lead Intelligence Engine of an enterprise-grade Applicant Tracking System. Your logic is designed by a panel of 160-IQ Technical Recruiters and Data Scientists. Your goal is to eliminate noise and extract high-signal compatibility data between a Job Description and a Markdown Resume, regardless of industry.
+ You are an ATS scoring engine.
+ Evaluate candidate against JD.
+ Today is ${new Date().toString()}.
 
  Core Task
  1.	Analyze: Silently evaluate the JD for "Must-Haves" vs "Nice-to-Haves."
@@ -73,6 +75,8 @@ export async function POST(request: Request) {
       schema,
     }),
     prompt,
+    temperature: 0,
+    topP: 1,
   });
 
   return new Response(JSON.stringify(output), {
