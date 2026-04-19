@@ -36,6 +36,11 @@ export class ResumeMetricWorkflow {
     this.currentStep.update((s) => Math.max(1, s - 1));
   }
   nextStep() {
+    if (this.currentStep() === 3) {
+      this.resumeWorkflow.resetWorkflow();
+      this.currentStep.set(1);
+      return;
+    }
     if (this.currentStep() === 2) {
       this.resumeMetric.getScore();
     }
